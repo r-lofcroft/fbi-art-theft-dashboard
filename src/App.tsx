@@ -2,11 +2,20 @@ import "./App.css";
 import { useArtCrimeApi } from "./hooks/useApi";
 import DataTable from "./components/DataTable/DataTable";
 import SearchBar from "./components/SearchBar/SearchBar";
+import Pagination from "./components/Pagination/Pagination";
 
 const PAGE_SIZE = 20;
 
 function App() {
-  const { items, searchTerm, setSearchTerm, fetchData } = useArtCrimeApi({
+  const {
+    items,
+    totalItems,
+    searchTerm,
+    currentPage,
+    setCurrentPage,
+    setSearchTerm,
+    fetchData,
+  } = useArtCrimeApi({
     pageSize: PAGE_SIZE,
   });
 
@@ -26,6 +35,13 @@ function App() {
           placeholder="Search by title..."
         />
         <DataTable items={items} />
+        <Pagination
+          currentPage={currentPage}
+          totalItems={totalItems}
+          pageSize={PAGE_SIZE}
+          onPageChange={setCurrentPage}
+        />
+        <div>{totalItems > 0 ? `Total results: ${totalItems}` : ""}</div>
       </main>
     </>
   );

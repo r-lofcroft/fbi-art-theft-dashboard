@@ -10,8 +10,11 @@ interface UseApiProps {
 
 interface UseReturn {
   items: ArtCrime[];
-  setSearchTerm: (term: string) => void;
+  totalItems: number;
   searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
   fetchData: () => void; // expose refetch capability
 }
 
@@ -21,18 +24,25 @@ export const useArtCrimeApi = ({
   initialSearchTerm = "",
 }: UseApiProps): UseReturn => {
   const [items, setItems] = useState<ArtCrime[]>([]);
+  const [totalItems, setTotalItems] = useState(0);
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+  const [currentPage, setCurrentPage] = useState(initialPage);
+  const [internalPageSize] = useState(pageSize); // Keep pagesize stable
 
   const fetchData = useCallback(async () => {
     try {
       const data = await fetchArtCrimes({
-        page: initialPage,
-        pageSize: pageSize,
+        page: currentPage,
+        pageSize: internalPageSize,
         searchTerm: searchTerm,
       });
       setItems(data.items);
-    } catch (error) {}
-  }, [initialPage, pageSize, searchTerm]);
+      setTotalItems(data.total);
+    } catch (error) {
+      setItems([]); // Clear items on error
+      setTotalItems(0);
+    }
+  }, [currentPage, internalPageSize, searchTerm]);
 
   useEffect(() => {
     fetchData();
@@ -40,7 +50,16 @@ export const useArtCrimeApi = ({
 
   const handleSetSearchTerm = (term: string) => {
     setSearchTerm(term);
+    setCurrentPage(1);
   };
 
-  return { items, searchTerm, setSearchTerm: handleSetSearchTerm, fetchData };
+  return {
+    items,
+    totalItems,
+    currentPage,
+    setCurrentPage,
+    searchTerm,
+    setSearchTerm: handleSetSearchTerm,
+    fetchData,
+  };
 };
