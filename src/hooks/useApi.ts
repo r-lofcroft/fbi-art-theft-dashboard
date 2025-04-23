@@ -11,6 +11,7 @@ interface UseApiProps {
 interface UseReturn {
   items: ArtCrime[];
   totalItems: number;
+  isLoading: boolean;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   currentPage: number;
@@ -28,8 +29,10 @@ export const useArtCrimeApi = ({
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [internalPageSize] = useState(pageSize); // Keep pagesize stable
+  const [isLoading, setIsLoading] = useState(false);
 
   const fetchData = useCallback(async () => {
+    setIsLoading(true);
     try {
       const data = await fetchArtCrimes({
         page: currentPage,
@@ -41,6 +44,8 @@ export const useArtCrimeApi = ({
     } catch (error) {
       setItems([]); // Clear items on error
       setTotalItems(0);
+    } finally {
+      setIsLoading(false);
     }
   }, [currentPage, internalPageSize, searchTerm]);
 
@@ -60,6 +65,7 @@ export const useArtCrimeApi = ({
     setCurrentPage,
     searchTerm,
     setSearchTerm: handleSetSearchTerm,
+    isLoading,
     fetchData,
   };
 };
