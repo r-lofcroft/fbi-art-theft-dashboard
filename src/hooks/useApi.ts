@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { fetchArtCrimes } from "../services/api";
-import type { ArtCrime } from "../types/types";
+import type { ApiError, ArtCrime } from "../types/types";
 
 interface UseApiProps {
   initialPage?: number;
@@ -12,6 +12,7 @@ interface UseReturn {
   items: ArtCrime[];
   totalItems: number;
   isLoading: boolean;
+  error: ApiError | null;
   searchTerm: string;
   setSearchTerm: (term: string) => void;
   currentPage: number;
@@ -30,9 +31,11 @@ export const useArtCrimeApi = ({
   const [currentPage, setCurrentPage] = useState(initialPage);
   const [internalPageSize] = useState(pageSize); // Keep pagesize stable
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<ApiError | null>(null);
 
   const fetchData = useCallback(async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const data = await fetchArtCrimes({
         page: currentPage,
@@ -41,7 +44,10 @@ export const useArtCrimeApi = ({
       });
       setItems(data.items);
       setTotalItems(data.total);
-    } catch (error) {
+    } catch (err: unknown) {
+      const message =
+        err instanceof Error ? err.message : "An unknown error has occured";
+      setError({ message });
       setItems([]); // Clear items on error
       setTotalItems(0);
     } finally {
@@ -49,13 +55,15 @@ export const useArtCrimeApi = ({
     }
   }, [currentPage, internalPageSize, searchTerm]);
 
+  // Effect to fetch data when page or search changes
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
+  // Function to update search term and reset page to 1
   const handleSetSearchTerm = (term: string) => {
     setSearchTerm(term);
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset page to 1 on search
   };
 
   return {
@@ -66,6 +74,7 @@ export const useArtCrimeApi = ({
     searchTerm,
     setSearchTerm: handleSetSearchTerm,
     isLoading,
+    error,
     fetchData,
   };
 };

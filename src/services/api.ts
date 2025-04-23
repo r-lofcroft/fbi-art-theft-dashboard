@@ -37,10 +37,36 @@ export const fetchArtCrimes = async ({
 
   try {
     const response = await fetch(url, { headers });
+    if (!response.ok) {
+      let errorMessage = `API Error: ${response.status} ${response.statusText}`;
+      try {
+        // Parse error details from response body
+        const errorBody = await response.json();
+        errorMessage =
+          errorBody?.message || errorBody.error?.message || errorBody;
+      } catch (e) {
+        // Ignore if error body isn't JSON or if parsing fails
+      }
+      if (response.status === 429) {
+        errorMessage = "Rate limit exceeded (Check API key)";
+      }
+      throw new Error(errorMessage);
+    }
     const data: ApiResponse = await response.json();
+
+    // Validation of response structure
+    if (!data || !Array.isArray(data.items) || typeof data.total !== "number") {
+      console.log(" API data structure invalid", data);
+      throw new Error("Received invalid data structure from API");
+    }
+
     return data;
-  } catch (error) {
+  } catch (error: unknown) {
     console.log("Fetch Error", error);
-    throw error;
+    // Trhow a consistent error format
+    const message =
+      error instanceof Error ? error.message : "An unknown error has occured";
+
+    throw new Error(message);
   }
 };

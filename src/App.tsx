@@ -16,6 +16,7 @@ function App() {
     setCurrentPage,
     setSearchTerm,
     isLoading,
+    error,
   } = useArtCrimeApi({
     pageSize: PAGE_SIZE,
   });
@@ -23,7 +24,7 @@ function App() {
   return (
     <div>
       <header>
-        <h1>Most Wanted Art Thefts</h1>
+        <h1>FBI "Art Theft" Dashboard</h1>
       </header>
       <main>
         <SearchBar
@@ -32,7 +33,7 @@ function App() {
           placeholder="Search by title..."
         />
         {isLoading && <LoadingSpinner />}
-        {!isLoading && (
+        {!isLoading && !error && (
           <>
             <DataTable items={items} />
             <Pagination
@@ -44,7 +45,7 @@ function App() {
             <div>{totalItems > 0 ? `Total results: ${totalItems}` : ""}</div>
           </>
         )}
-        {!isLoading && items.length === 0 && searchTerm && (
+        {!isLoading && !error && items.length === 0 && searchTerm && (
           <p>No results for "{searchTerm}"</p>
         )}
       </main>
