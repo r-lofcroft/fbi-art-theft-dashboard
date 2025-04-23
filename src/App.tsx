@@ -1,18 +1,14 @@
-import { useEffect } from "react";
-
 import "./App.css";
 import { useArtCrimeApi } from "./hooks/useApi";
 import DataTable from "./components/DataTable/DataTable";
+import SearchBar from "./components/SearchBar/SearchBar";
 
 const PAGE_SIZE = 20;
 
 function App() {
-  const { items, fetchData } = useArtCrimeApi({ pageSize: PAGE_SIZE });
-
-  //Debug to check items
-  useEffect(() => {
-    console.log("Current items:", items);
-  }, [items]);
+  const { items, searchTerm, setSearchTerm, fetchData } = useArtCrimeApi({
+    pageSize: PAGE_SIZE,
+  });
 
   return (
     <>
@@ -24,6 +20,11 @@ function App() {
         </p>
       </div>
       <main>
+        <SearchBar
+          initialValue={searchTerm}
+          onSearch={setSearchTerm}
+          placeholder="Search by title..."
+        />
         <DataTable items={items} />
       </main>
     </>

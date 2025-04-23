@@ -12,11 +12,17 @@ interface FetchParams {
 export const fetchArtCrimes = async ({
   page = 1,
   pageSize = 20,
+  searchTerm = "",
 }: FetchParams): Promise<ApiResponse> => {
   const params = new URLSearchParams({
     page: page.toString(),
     pageSize: pageSize.toString(),
   });
+
+  if (searchTerm.trim()) {
+    params.set("title", searchTerm.trim());
+  }
+
   const url = `${BASE_URL}@artcrimes?${params.toString()}`;
   console.log("Fetching URL", url);
 
