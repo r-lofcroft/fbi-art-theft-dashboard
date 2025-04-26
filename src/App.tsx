@@ -61,7 +61,9 @@ function App() {
               pageSize={PAGE_SIZE}
               onPageChange={setCurrentPage}
             />
-            <div>{totalItems > 0 ? `Total results: ${totalItems}` : ""}</div>
+            <div className="total-results">
+              {totalItems > 0 ? `Total results: ${totalItems}` : ""}
+            </div>
           </>
         )}
         {!isLoading && !error && items.length === 0 && searchTerm && (
@@ -73,6 +75,9 @@ function App() {
         onClose={handleCloseModal}
         item={selectedItem}
       />
+      <footer className="app-footer">
+        <p>Developed by Robin Williscroft Löfmark</p>
+      </footer>
     </div>
   );
 }
