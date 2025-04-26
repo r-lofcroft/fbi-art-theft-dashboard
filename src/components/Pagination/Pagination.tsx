@@ -1,3 +1,5 @@
+import styles from "./Pagination.module.css";
+
 interface Props {
   currentPage: number;
   totalItems: number;
@@ -30,21 +32,22 @@ const Pagination: React.FC<Props> = ({
   };
 
   return (
-    <nav>
+    <nav className={styles.paginationNav}>
       <button
         onClick={handlePrevious}
         disabled={currentPage === 1}
+        className={styles.pageButton}
         aria-label="Go to previous page"
       >
         &laquo; Previous
       </button>
-      <span aria-current="page">
-        {" "}
+      <span aria-current="page" className={styles.pageInfo}>
         Page {currentPage} of {totalPages}
       </span>
       <button
         onClick={handleNext}
         disabled={currentPage === totalPages}
+        className={styles.pageButton}
         aria-label="Go to next page"
       >
         Next &raquo;

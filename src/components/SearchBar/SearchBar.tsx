@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import styles from "./SearchBar.module.css";
 
 interface Props {
   initialValue?: string;
@@ -41,10 +42,13 @@ const SearchBar: React.FC<Props> = ({
   }, []);
 
   return (
-    <div>
-      <label htmlFor="searchInput">Search Art Crimes</label>
+    <div className={styles.searchBarContainer}>
+      <label htmlFor="searchInput" className={styles.label}>
+        Search Art Crimes
+      </label>
       <input
         id="searchInput"
+        className={styles.searchInput}
         type="search"
         value={inputValue}
         onChange={handleChange}

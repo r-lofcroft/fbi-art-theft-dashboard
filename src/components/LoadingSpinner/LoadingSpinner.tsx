@@ -1,6 +1,8 @@
+import styles from "./LoadingSpinner.module.css";
+
 const LoadingSpinner: React.FC = () => (
-  <div>
-    <div> {/* TBD visual Spinner */}</div>
+  <div className={styles.spinnerContainer} aria-live="polite">
+    <div className={styles.spinner}></div>
     <span>Loading...</span>
   </div>
 );

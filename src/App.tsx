@@ -39,8 +39,8 @@ function App() {
   };
 
   return (
-    <div>
-      <header>
+    <div className="app-container">
+      <header className="app-header">
         <h1>FBI "Art Theft" Dashboard</h1>
       </header>
       <main>

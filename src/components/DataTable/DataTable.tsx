@@ -1,4 +1,5 @@
 import { ArtCrime } from "../../types/types";
+import styles from "./DataTable.module.css";
 
 interface Props {
   items: ArtCrime[];
@@ -12,19 +13,20 @@ const DataTable: React.FC<Props> = ({ items, onRowClick }) => {
     return <p>No data found.</p>;
   }
   return (
-    <div>
-      <table>
-        <thead>
+    <div className={styles.tableContainer}>
+      <table className={styles.table}>
+        <thead className={styles.thead}>
           <tr>
             <th scope="col">Image</th>
             <th scope="col">Title</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={styles.tbody}>
           {items.map((item: any) => {
             return (
               <tr
                 key={item.uid}
+                className={styles.tableRow}
                 onClick={() => onRowClick(item)}
                 tabIndex={0}
                 aria-label={`View details for ${item.details}`}
@@ -35,9 +37,10 @@ const DataTable: React.FC<Props> = ({ items, onRowClick }) => {
                       src={item.images[0].thumb}
                       alt={`Thumbnail for ${item.title}`}
                       loading="lazy"
+                      className={styles.thumbnail}
                     />
                   ) : (
-                    <span>No Image</span>
+                    <span className={styles.noImage}>No Image</span>
                   )}
                 </td>
                 <td>{item.title || "N/A"}</td>

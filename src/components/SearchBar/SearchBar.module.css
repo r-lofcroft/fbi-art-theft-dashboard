@@ -1,0 +1,31 @@
+.searchBarContainer {
+  margin-bottom: 1rem;
+}
+
+.label {
+  /*Visually hides label but keeps it accessible*/
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.searchInput {
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #09f;
+  box-shadow: 0 0 0 2px rgba(0, 153, 255, 0.2);
+}
