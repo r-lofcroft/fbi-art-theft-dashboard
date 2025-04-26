@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { fetchArtCrimes } from "../services/api";
 import type { ApiError, ArtCrime } from "../types/types";
 
-interface UseApiProps {
+interface Props {
   initialPage?: number;
   pageSize?: number;
   initialSearchTerm?: string;
@@ -24,7 +24,7 @@ export const useArtCrimeApi = ({
   initialPage = 1,
   pageSize = 20,
   initialSearchTerm = "",
-}: UseApiProps): UseReturn => {
+}: Props): UseReturn => {
   const [items, setItems] = useState<ArtCrime[]>([]);
   const [totalItems, setTotalItems] = useState(0);
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);

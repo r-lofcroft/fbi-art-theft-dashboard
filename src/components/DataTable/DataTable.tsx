@@ -1,4 +1,11 @@
-const DataTable: React.FC<any> = ({ items }) => {
+import { ArtCrime } from "../../types/types";
+
+interface Props {
+  items: ArtCrime[];
+  onRowClick: (item: ArtCrime) => void;
+}
+
+const DataTable: React.FC<Props> = ({ items, onRowClick }) => {
   console.log("debug", items);
 
   if (!items || items.length === 0) {
@@ -16,7 +23,12 @@ const DataTable: React.FC<any> = ({ items }) => {
         <tbody>
           {items.map((item: any) => {
             return (
-              <tr key={item.uid}>
+              <tr
+                key={item.uid}
+                onClick={() => onRowClick(item)}
+                tabIndex={0}
+                aria-label={`View details for ${item.details}`}
+              >
                 <td>
                   {item.images && item.images.length > 0 ? (
                     <img
