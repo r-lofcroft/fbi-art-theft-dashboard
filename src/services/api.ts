@@ -1,6 +1,6 @@
 import { ApiResponse } from "../types/types";
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://api.fbi.gov/"; // Adding the URL for demo purposes
 const API_KEY = import.meta.env.VITE_API_KEY || "DEMO_KEY";
 
 interface FetchParams {
